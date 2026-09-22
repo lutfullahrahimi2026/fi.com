@@ -339,7 +339,7 @@ section {
   gap: 12px;
 }
 
-@media (max-width: 420px) {
+@media (max-width: 920px) {
   .logo-full {
     display: none;
   }
