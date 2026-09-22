@@ -46,6 +46,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -60,6 +61,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--ivory);
   color: var(--charcoal);
   font-family: var(--font-body);
@@ -343,6 +345,9 @@ section {
   }
   .header-actions {
     gap: 6px;
+  }
+  .header-actions .icon-btn {
+    display: none;
   }
   .header-actions .btn-sm {
     padding: 11px 14px;
