@@ -59,14 +59,21 @@
 
   <section class="page-hero">
     <div class="container reveal">
-      <span class="section-label">Events</span>
+      <span class="section-label">Upcoming Events</span>
       <h1>Learn. Reflect. Connect.</h1>
-      <p class="section-desc">Discover upcoming programs, conferences, and community events.</p>
+      <p class="section-desc">Annual Conferences — December 2026: Faizani International Conference, Faizani International NextGen Conference, and the Faizani International Children's Conference.</p>
     </div>
   </section>
 
-  <!-- EMPTY STATE (no events currently scheduled) -->
-  <section class="programs">
+  <!-- EVENTS GRID (populated from the backend by js/events.js; hidden when empty) -->
+  <section class="programs" id="eventsListSection" hidden>
+    <div class="container">
+      <div class="book-grid" id="eventsGrid"></div>
+    </div>
+  </section>
+
+  <!-- EMPTY STATE (shown when no events are currently scheduled) -->
+  <section class="programs" id="eventsEmptyState">
     <div class="container">
       <div class="empty-state reveal">
         <div class="icon-ring">
@@ -81,10 +88,11 @@
           <li class="chip">Community Events</li>
         </ul>
 
-        <form class="newsletter-form" onsubmit="return false;">
-          <input type="email" placeholder="Your email address" aria-label="Email address" required />
+        <form class="newsletter-form" id="eventsSubscribeForm">
+          <input type="email" id="eventsSubscribeEmail" placeholder="Your email address" aria-label="Email address" required />
           <button type="submit" class="btn btn-primary">Stay Updated</button>
         </form>
+        <p class="section-desc" id="eventsSubscribeStatus" style="margin-top: var(--space-sm);" role="status"></p>
       </div>
     </div>
   </section>
@@ -140,9 +148,9 @@
       <div class="footer-col">
         <h4>Connect</h4>
         <ul>
-          <li><a href="https://www.youtube.com/@Asrar-Marefat" target="_blank" rel="noopener">YouTube</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Instagram</a></li>
+          <li><a href="https://www.youtube.com/@FaizaniInternationalOfficial" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.facebook.com/FaizaniInternational" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.instagram.com/faizaniinternational" target="_blank" rel="noopener">Instagram</a></li>
         </ul>
       </div>
     </div>
@@ -154,5 +162,8 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script src="js/subscribe-form.js"></script>
+<script src="js/events.js"></script>
 </body>
 </html>

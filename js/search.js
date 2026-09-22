@@ -7,22 +7,9 @@
   const resultsCount = document.getElementById("resultsCount");
   const noResults = document.getElementById("noResults");
 
-  if (!input || typeof SEARCH_INDEX === "undefined") return;
+  if (!input || typeof SEARCH_INDEX === "undefined" || !window.api) return;
 
-  // Merge in book records from the shared catalog (js/books-data.js) so the
-  // index doesn't duplicate what's already maintained there.
-  const bookEntries =
-    typeof BOOKS_DATA !== "undefined"
-      ? BOOKS_DATA.map((b) => ({
-          title: b.title,
-          url: `book.html?slug=${b.slug}`,
-          category: "Publications",
-          description: b.description,
-          tags: `${b.series} ${b.topics.join(" ")}`,
-        }))
-      : [];
-  const searchData = SEARCH_INDEX.concat(bookEntries);
-
+  let searchData = SEARCH_INDEX.slice();
   let activeCategory = "All";
 
   function readQueryFromUrl() {
@@ -105,4 +92,23 @@
 
   input.value = readQueryFromUrl();
   render();
+
+  // Merge in book records from the API so the index doesn't duplicate what's
+  // already maintained in the database — re-render once they arrive.
+  window.api
+    .get("/api/books")
+    .then((books) => {
+      const bookEntries = books.map((b) => ({
+        title: b.title,
+        url: `book.html?slug=${b.slug}`,
+        category: "Publications",
+        description: b.description,
+        tags: `${b.series} ${b.topics.join(" ")}`,
+      }));
+      searchData = SEARCH_INDEX.concat(bookEntries);
+      render();
+    })
+    .catch(() => {
+      // Book search results are a nice-to-have; page-level results still work without them.
+    });
 })();

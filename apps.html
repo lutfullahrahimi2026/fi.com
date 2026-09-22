@@ -100,10 +100,11 @@
       </div>
 
       <div class="pub-cta reveal">
-        <form style="display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;" onsubmit="return false;">
-          <input type="email" placeholder="Your email address" aria-label="Email address" required style="border:1px solid var(--hairline); border-radius:var(--radius-full); padding:13px 20px; font-family:var(--font-body); font-size:14.5px; outline:none; min-width:260px;" />
+        <form id="appsSubscribeForm" style="display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+          <input type="email" id="appsSubscribeEmail" placeholder="Your email address" aria-label="Email address" required style="border:1px solid var(--hairline); border-radius:var(--radius-full); padding:13px 20px; font-family:var(--font-body); font-size:14.5px; outline:none; min-width:260px;" />
           <button type="submit" class="btn btn-primary">Get Notified</button>
         </form>
+        <p class="section-desc" id="appsSubscribeStatus" style="margin-top: var(--space-sm);" role="status"></p>
       </div>
     </div>
   </section>
@@ -159,9 +160,9 @@
       <div class="footer-col">
         <h4>Connect</h4>
         <ul>
-          <li><a href="https://www.youtube.com/@Asrar-Marefat" target="_blank" rel="noopener">YouTube</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Instagram</a></li>
+          <li><a href="https://www.youtube.com/@FaizaniInternationalOfficial" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.facebook.com/FaizaniInternational" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.instagram.com/faizaniinternational" target="_blank" rel="noopener">Instagram</a></li>
         </ul>
       </div>
     </div>
@@ -173,5 +174,15 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script src="js/subscribe-form.js"></script>
+<script>
+  window.wireSubscribeForm({
+    form: document.getElementById("appsSubscribeForm"),
+    emailInput: document.getElementById("appsSubscribeEmail"),
+    statusEl: document.getElementById("appsSubscribeStatus"),
+    sourcePage: "apps.html",
+  });
+</script>
 </body>
 </html>

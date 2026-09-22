@@ -1,8 +1,9 @@
-// UNUSED as of the Express/SQLite backend migration — no page loads this file
-// anymore (they fetch /api/books instead; see server/scripts/seed-books.js,
-// which copied this exact content into the database). Kept only as a record
-// of the original static content; safe to delete once the backend is trusted.
-const BOOKS_DATA = [
+require("dotenv").config();
+const { get, run } = require("../db");
+
+// Mirrors the literal content of js/books-data.js at the time the backend was
+// introduced, so migrating to the database doesn't lose or alter any content.
+const BOOKS = [
   {
     slug: "knowing-oneself-knowing-god",
     series: "The Six Goblets",
@@ -10,10 +11,10 @@ const BOOKS_DATA = [
     title: "Knowing Oneself — Knowing God",
     author: "Mawlana Faizani",
     description: "The gateway to self-knowledge as the path toward knowing the Divine.",
-    longDescription: "The first volume in the Six Goblets series, exploring the path to self-knowledge as the gateway to knowing the Divine. Mawlana Faizani guides the reader through contemplation of the self as the starting point of every spiritual journey.",
+    longDescription:
+      "The first volume in the Six Goblets series, exploring the path to self-knowledge as the gateway to knowing the Divine. Mawlana Faizani guides the reader through contemplation of the self as the starting point of every spiritual journey.",
     topics: ["Self-Knowledge", "Faith"],
     language: "English",
-    pdfUrl: null,
     toc: ["Introduction", "The Nature of the Self", "The Path to Nearness"],
   },
   {
@@ -23,10 +24,10 @@ const BOOKS_DATA = [
     title: "Magnificence and Perfection of Glorious Artificer in Arts",
     author: "Mawlana Faizani",
     description: "A reflection on the perfection found in the works of the Creator.",
-    longDescription: "The second volume in the Six Goblets series. A reflection on the perfection found in the works of the Creator, and what that perfection reveals to the contemplative heart.",
+    longDescription:
+      "The second volume in the Six Goblets series. A reflection on the perfection found in the works of the Creator, and what that perfection reveals to the contemplative heart.",
     topics: ["Creation", "Reflection"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -36,10 +37,10 @@ const BOOKS_DATA = [
     title: "Man and the Secrets of Nearness",
     author: "Mawlana Faizani",
     description: "Exploring the path toward nearness to the Divine.",
-    longDescription: "The third volume in the Six Goblets series, exploring the path toward nearness to the Divine and what it asks of the seeker.",
+    longDescription:
+      "The third volume in the Six Goblets series, exploring the path toward nearness to the Divine and what it asks of the seeker.",
     topics: ["Spirituality"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -49,10 +50,10 @@ const BOOKS_DATA = [
     title: "Man and the Philosophy of Test",
     author: "Mawlana Faizani",
     description: "Understanding trial and purpose in human life.",
-    longDescription: "The fourth volume in the Six Goblets series. Understanding trial and purpose in human life, and how difficulty shapes the spiritual path.",
+    longDescription:
+      "The fourth volume in the Six Goblets series. Understanding trial and purpose in human life, and how difficulty shapes the spiritual path.",
     topics: ["Humanity"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -62,10 +63,10 @@ const BOOKS_DATA = [
     title: "The Secrets of Creation up to the Court of Greatness",
     author: "Mawlana Faizani",
     description: "A journey through creation toward the Divine court.",
-    longDescription: "The fifth volume in the Six Goblets series. A journey through creation toward the Divine court, tracing the signs of the Creator through the created world.",
+    longDescription:
+      "The fifth volume in the Six Goblets series. A journey through creation toward the Divine court, tracing the signs of the Creator through the created world.",
     topics: ["Creation"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -75,10 +76,10 @@ const BOOKS_DATA = [
     title: "Alphabets of the Secrets of the Quran",
     author: "Mawlana Faizani",
     description: "Uncovering layers of meaning within the Quran.",
-    longDescription: "The sixth and final volume in the Six Goblets series. Uncovering layers of meaning within the Quran through contemplative reading.",
+    longDescription:
+      "The sixth and final volume in the Six Goblets series. Uncovering layers of meaning within the Quran through contemplative reading.",
     topics: ["Quran"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -91,7 +92,6 @@ const BOOKS_DATA = [
     longDescription: "Part of the Deconstruction and Analysis of Man's Atom series. An examination of the human soul and its nature.",
     topics: ["The Soul"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -104,7 +104,6 @@ const BOOKS_DATA = [
     longDescription: "Part of the Deconstruction and Analysis of Man's Atom series. Understanding opposition to the soul's spiritual path.",
     topics: ["Faith"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -117,7 +116,6 @@ const BOOKS_DATA = [
     longDescription: "Part of the Deconstruction and Analysis of Man's Atom series. The heart as the seat of remembrance and reflection.",
     topics: ["Dhikr"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -130,7 +128,6 @@ const BOOKS_DATA = [
     longDescription: "A study on those devoted to remembrance — the Dhakiren — and the reasoning behind their practice.",
     topics: ["Dhikr"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -143,7 +140,6 @@ const BOOKS_DATA = [
     longDescription: "A reflection on humanity's search for meaning, and the essences that remain unrecognized within the self.",
     topics: ["Self-Knowledge"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -156,7 +152,6 @@ const BOOKS_DATA = [
     longDescription: "Viewing the world through Quranic understanding — a telescope turned outward from revelation.",
     topics: ["Quran"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
   {
@@ -169,14 +164,42 @@ const BOOKS_DATA = [
     longDescription: "Illuminating the path of spiritual knowledge — gnosis as the light that guides the seeker.",
     topics: ["Gnosis"],
     language: "English",
-    pdfUrl: null,
     toc: null,
   },
 ];
 
-// Ordered list of series for consistent section rendering on publications.html
-const BOOK_SERIES_ORDER = ["The Six Goblets", "Deconstruction and Analysis of Man's Atom", "Additional Publications"];
+function main() {
+  let inserted = 0;
+  let skipped = 0;
 
-function getBookBySlug(slug) {
-  return BOOKS_DATA.find((b) => b.slug === slug) || null;
+  BOOKS.forEach((book, index) => {
+    const existing = get("SELECT id FROM books WHERE slug = ?", [book.slug]);
+    if (existing) {
+      skipped++;
+      return;
+    }
+
+    run(
+      `INSERT INTO books (slug, series, series_label, title, author, description, long_description, topics, language, toc, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        book.slug,
+        book.series,
+        book.seriesLabel,
+        book.title,
+        book.author,
+        book.description,
+        book.longDescription,
+        JSON.stringify(book.topics),
+        book.language,
+        book.toc ? JSON.stringify(book.toc) : null,
+        index + 1,
+      ]
+    );
+    inserted++;
+  });
+
+  console.log(`${inserted} inserted, ${skipped} skipped (already present).`);
 }
+
+main();

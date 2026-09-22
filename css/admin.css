@@ -1,0 +1,219 @@
+/* Admin panel — layout only; colors/typography/buttons/form-fields come from css/styles.css */
+
+/* .admin-login-wrap/.admin-dashboard set their own `display`, which has the same
+   specificity as the browser's default [hidden] rule and would otherwise win —
+   this makes the hidden attribute always take precedence. */
+[hidden] {
+  display: none !important;
+}
+
+.admin-login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  background: var(--ivory);
+}
+
+.admin-login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.admin-dashboard {
+  min-height: 100vh;
+  background: var(--ivory);
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--hairline);
+  background: var(--white);
+}
+
+.admin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 14px;
+  color: var(--charcoal);
+  opacity: 0.85;
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  padding: var(--space-sm) var(--space-md) 0;
+  flex-wrap: wrap;
+}
+
+.admin-tab {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 10px 18px;
+  border: none;
+  background: transparent;
+  color: var(--charcoal);
+  opacity: 0.6;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.admin-tab:hover {
+  opacity: 0.9;
+}
+
+.admin-tab.is-active {
+  opacity: 1;
+  color: var(--forest);
+  border-bottom-color: var(--gold);
+}
+
+.admin-main {
+  padding: var(--space-md);
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.admin-panel {
+  display: none;
+}
+
+.admin-panel.is-active {
+  display: block;
+}
+
+.admin-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.admin-form {
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.admin-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (max-width: 700px) {
+  .admin-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: var(--space-sm);
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  background: var(--white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: top;
+}
+
+.admin-table th {
+  font-weight: 600;
+  color: var(--forest);
+  white-space: nowrap;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table .row-actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.admin-table .row-actions button {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  color: var(--forest);
+}
+
+.admin-table .row-actions button:hover {
+  border-color: var(--forest);
+}
+
+.admin-table .row-actions button.danger {
+  color: #a13a3a;
+}
+
+.admin-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--sand);
+  color: var(--forest);
+}
+
+.admin-badge.is-unread {
+  background: var(--gold-soft);
+}
+
+/* .form-field input (styles.css) targets every <input>, including checkboxes —
+   that gives checkboxes a stretched, bordered white box that's easy to miss or
+   misclick. Reset them back to a normal native checkbox here. */
+.admin-form .form-field input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  accent-color: var(--forest);
+  transform: scale(1.2);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.admin-form .form-field label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

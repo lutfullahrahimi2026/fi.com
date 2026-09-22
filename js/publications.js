@@ -1,6 +1,6 @@
 (function () {
   const container = document.getElementById("seriesContainer");
-  if (!container || typeof BOOKS_DATA === "undefined") return;
+  if (!container || !window.api) return;
 
   const seriesLabels = {
     "The Six Goblets": "Featured Series",
@@ -23,26 +23,38 @@
     `;
   }
 
-  const html = BOOK_SERIES_ORDER.map((seriesName) => {
-    const books = BOOKS_DATA.filter((b) => b.series === seriesName);
-    if (!books.length) return "";
-    const anchorId = seriesName === "The Six Goblets" ? ' id="six-goblets"' : "";
-    return `
-      <div class="series-block"${anchorId}>
-        <div class="section-head-row reveal">
-          <div>
-            <span class="section-label">${seriesLabels[seriesName] || "Series"}</span>
-            <h2 class="section-heading">${seriesName}</h2>
-          </div>
-        </div>
-        <div class="book-grid">
-          ${books.map(bookCardHTML).join("")}
-        </div>
-      </div>
-    `;
-  }).join("");
+  window.api
+    .get("/api/books")
+    .then((books) => {
+      // Books already arrive ordered by sort_order, so the order series first
+      // appear in is a stable, admin-controlled display order.
+      const seriesOrder = [...new Set(books.map((b) => b.series))];
 
-  container.innerHTML = html;
+      const html = seriesOrder
+        .map((seriesName) => {
+          const seriesBooks = books.filter((b) => b.series === seriesName);
+          if (!seriesBooks.length) return "";
+          const anchorId = seriesName === "The Six Goblets" ? ' id="six-goblets"' : "";
+          return `
+            <div class="series-block"${anchorId}>
+              <div class="section-head-row reveal">
+                <div>
+                  <span class="section-label">${seriesLabels[seriesName] || "Series"}</span>
+                  <h2 class="section-heading">${seriesName}</h2>
+                </div>
+              </div>
+              <div class="book-grid">
+                ${seriesBooks.map(bookCardHTML).join("")}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
 
-  if (window.initReveal) window.initReveal(container);
+      container.innerHTML = html;
+      if (window.initReveal) window.initReveal(container);
+    })
+    .catch(() => {
+      container.innerHTML = `<p class="section-desc">Publications are temporarily unavailable. Please try again shortly.</p>`;
+    });
 })();
